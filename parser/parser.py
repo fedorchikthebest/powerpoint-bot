@@ -26,7 +26,7 @@ def load_cookie(driver, path):
         driver.add_cookie(cookie)
 
 
-async def login():
+async def login(email, password):
     '''Логинит пользователя по моему логину и паролю'''
     try:
         load_cookie(driver, "auth.json")
@@ -46,8 +46,8 @@ async def login():
     password_elem = driver.find_element(By.NAME, "password")
 
 
-    email_elem.send_keys("fedorgorlenko@gmail.com")
-    password_elem.send_keys("lyw^O6'pNl`rTYjY")
+    email_elem.send_keys(email)
+    password_elem.send_keys(password)
     password_elem.send_keys(Keys.RETURN)
     await asyncio.sleep(3)
     save_cookie(driver, "auth.json")
