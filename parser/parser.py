@@ -80,6 +80,3 @@ async def main():
     driver.get("https://slidesgo.com")
     load_cookie(driver, "auth.json")
     await generate_presentation("Почему США это историческа территория России")
-
-
-asyncio.run(main())
