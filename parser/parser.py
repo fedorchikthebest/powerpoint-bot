@@ -76,7 +76,10 @@ async def generate_presentation(promt:str):
     await asyncio.sleep(40)
 
 
-async def main():
+async def main(PROMT):
     driver.get("https://slidesgo.com")
+    await login("")
     load_cookie(driver, "auth.json")
-    await generate_presentation("Почему США это историческа территория России")
+    await generate_presentation(PROMT)
+
+
