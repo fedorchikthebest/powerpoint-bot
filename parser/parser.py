@@ -10,7 +10,7 @@ import json
 
 options = Options()
 options.page_load_strategy = 'eager'
-prefs = {"download.default_directory" : "D:\\Projects\\powerpoint-bot\\presentations", "directory_upgrade": True}
+prefs = {"download.default_directory" : "CRAFT_PRESENTATION\save_present", "directory_upgrade": True}
 options.add_experimental_option("prefs",prefs)
 driver = webdriver.Chrome(options=options)
 
