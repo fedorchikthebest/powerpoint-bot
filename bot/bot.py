@@ -5,6 +5,8 @@ from aiogram.filters import StateFilter
 from aiogram.filters.command import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+from aiogram.types import Message, FSInputFile
+
 from parser import parser
 import TOKEN
 from CRAFT_PRESENTATION import craftDB
@@ -29,10 +31,10 @@ async def cmd_power(message: types.Message, state : FSMContext):
 
 
 @dp.message(F.text,StateFilter(WaitDescription.waiting_for_description))
-async def get_description(message: types.Message, state: FSMContext):
+async def get_description(message: types.Document, state: FSMContext):
     PROMT = message.text
-    parser.main(PROMT)
-
+    link = parser.main(PROMT)
+    await message.reply(open(link, 'r'))
     await state.clear()
 
 async def main():
