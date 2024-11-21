@@ -14,7 +14,7 @@ options = Options()
 options.page_load_strategy = 'eager'
 prefs = {"download.default_directory" : f"{os.getcwd()}/presentations/", "directory_upgrade": True}
 options.add_experimental_option("prefs",prefs)
-driver = webdriver.Chrome(options=options, service=Service(r'/usr/local/bin/chromedriver'))
+
 
 def save_cookie(driver, path):
     with open(path, 'w') as filehandler:
@@ -29,7 +29,9 @@ def load_cookie(driver, path):
 
 def login(email, password):
     '''Логинит пользователя по моему логину и паролю'''
-    
+
+    driver = webdriver.Chrome(options=options)
+
     try:
         load_cookie(driver, "parser/auth.json")
         return True
@@ -54,10 +56,13 @@ def login(email, password):
     password_elem.send_keys(Keys.RETURN)
     sleep(10)
     save_cookie(driver, "auth.json")
+    driver.quit()
 
 
 def generate_presentation(promt:str):
     '''Функция генерирует и сохраняет презентацию'''
+
+    driver = webdriver.Chrome(options=options)
 
     driver.get('https://slidesgo.com/')
 
@@ -70,23 +75,14 @@ def generate_presentation(promt:str):
     driver.find_element(By.XPATH, '//*[@id="landing-ai-cta"]').click()
 
     promt_input = driver.find_element(By.XPATH, '//*[@id="modal-ai-generator"]/div/div[1]/form/div[1]/div[1]/input')
-    try:
-        promt_input.send_keys(promt)
-        promt_input.send_keys(Keys.RETURN)
-    except Exception:
-        sleep(5)
-        promt_input = driver.find_element(By.XPATH, '//*[@id="modal-ai-generator"]/div/div[1]/form/div[1]/div[1]/input')
-        promt_input.send_keys(promt)
-        promt_input.send_keys(Keys.RETURN)
-
+    promt_input.send_keys(promt)
+    promt_input.send_keys(Keys.RETURN)
     
     sleep(40)
 
     b = driver.find_element(By.XPATH, '//*[@id="app"]/div/div/header/div/div[3]/div/div[1]/button')
     b.click()
     sleep(5)
-    try:
-        b = driver.find_element(By.XPATH, '//*[@id="app"]/div/div/header/div/div[3]/div/div[1]/div/div/div[2]/button').click()
-    except Exception:
-        pass
+    b = driver.find_element(By.XPATH, '//*[@id="app"]/div/div/header/div/div[3]/div/div[1]/div/div/div[2]/button').click()
     sleep(40)
+    driver.quit()

@@ -44,11 +44,7 @@ def worker():
         item = q[0]
         q.pop(0)
         used.pop(0)
-        try:
-            generate_presentation(item[0])
-        except Exception:
-            sleep(20)
-            generate_presentation(item[0])
+        generate_presentation(item[0])
         link = f"{os.getcwd()}/presentations/{os.listdir('presentations/')[1]}"
         a = open(link, "rb")
         bot.send_document(item[1], a)
