@@ -44,12 +44,15 @@ def worker():
         item = q[0]
         q.pop(0)
         used.pop(0)
-        generate_presentation(item[0])
-        link = f"{os.getcwd()}/presentations/{os.listdir('presentations/')[1]}"
-        a = open(link, "rb")
-        bot.send_document(item[1], a)
-        a.close()
-        os.remove(link)
+        try:
+            generate_presentation(item[0])
+            link = f"{os.getcwd()}/presentations/{os.listdir('presentations/')[1]}"
+            a = open(link, "rb")
+            bot.send_document(item[1], a)
+            a.close()
+            os.remove(link)
+        except Exception:
+            bot.send_message(item[1], "Произошла ошибка при создании презентациию Попробуйте снова")
 
 
 threading.Thread(target=worker, daemon=True).start()

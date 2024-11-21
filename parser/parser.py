@@ -12,7 +12,7 @@ import os
 
 options = Options()
 options.page_load_strategy = 'eager'
-prefs = {"download.default_directory" : f"{os.getcwd()}/presentations/", "directory_upgrade": True}
+prefs = {"download.default_directory" : f"{os.getcwd()}\\presentations\\", "directory_upgrade": True}
 options.add_experimental_option("prefs",prefs)
 
 
@@ -28,6 +28,7 @@ def load_cookie(driver, path):
 
 
 def login(email, password):
+    global options
     '''Логинит пользователя по моему логину и паролю'''
 
     driver = webdriver.Chrome(options=options)
@@ -54,12 +55,13 @@ def login(email, password):
     email_elem.send_keys(email)
     password_elem.send_keys(password)
     password_elem.send_keys(Keys.RETURN)
-    sleep(10)
+    sleep(20)
     save_cookie(driver, "auth.json")
     driver.quit()
 
 
 def generate_presentation(promt:str):
+    global options
     '''Функция генерирует и сохраняет презентацию'''
 
     driver = webdriver.Chrome(options=options)
@@ -73,8 +75,14 @@ def generate_presentation(promt:str):
     sleep(3)
         
     driver.find_element(By.XPATH, '//*[@id="landing-ai-cta"]').click()
+    
+    sleep(30)
 
     promt_input = driver.find_element(By.XPATH, '//*[@id="modal-ai-generator"]/div/div[1]/form/div[1]/div[1]/input')
+    pages_input = driver.find_element(By.XPATH, '//*[@id="modal-ai-generator"]/div/div[1]/form/div[1]/div[2]/div[3]/input')
+    
+    pages_input.send_keys(Keys.DELETE)
+    pages_input.send_keys("10")
     promt_input.send_keys(promt)
     promt_input.send_keys(Keys.RETURN)
     
