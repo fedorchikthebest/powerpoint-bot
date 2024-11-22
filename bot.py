@@ -46,15 +46,19 @@ def worker():
         used.pop(0)
         try:
             generate_presentation(item[0])
+        except Exception:
+            pass
+        
+        if len(os.listdir('presentations/')) == 2:
             link = f"{os.getcwd()}/presentations/{os.listdir('presentations/')[1]}"
             a = open(link, "rb")
             bot.send_document(item[1], a)
             a.close()
             os.remove(link)
-        except Exception:
-            bot.send_message(item[1], "Произошла ошибка при создании презентациию Попробуйте снова")
-
+        else:
+            bot.send_message(item[1], "Произошла ошибка, поробуцте ещё раз")
 
 threading.Thread(target=worker, daemon=True).start()
 
 bot.infinity_polling()
+
